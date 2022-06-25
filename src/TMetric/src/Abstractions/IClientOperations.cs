@@ -1,4 +1,6 @@
-﻿namespace TMetric.Abstractions;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TMetric.Abstractions;
 
 public interface IClientOperations
 {
@@ -13,15 +15,18 @@ public record class Client
 
     public uint ActiveProjectsCount { get; set; }
 
-    public string Avatar { get; set; }
+    [MaxLength( 100 )]
+    public string? Avatar { get; set; }
 
-    public string ClientAddress { get; set; }
+    [MaxLength( 400 )]
+    public string? ClientAddress { get; set; }
 
     public int ClientId { get; set; }
 
-    public string ClientName { get; set; }
+    [MaxLength( 255 )]
+    public string? ClientName { get; set; }
 
-    public int[] ContactUsers { get; set; }
+    public int[]? ContactUsers { get; set; }
 
     public Rate DefaultBillableRate { get; set; }
 
@@ -32,5 +37,6 @@ public record class Rate
 {
     public decimal Amount { get; set; }
 
+    [StringLength( 3, MinimumLength = 3 )]
     public string Currency { get; set; }
 }

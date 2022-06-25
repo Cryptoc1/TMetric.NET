@@ -6,6 +6,7 @@ public abstract class AuthorizationHandler : DelegatingHandler
     /// <summary> Retrieve the TMetric API Key to be used for authorization. </summary>
     protected abstract ValueTask<string> GetApiKey( CancellationToken cancellation );
 
+    /// <inheritdoc/>
     protected override async Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellation )
     {
         if( request.Headers.Authorization is null )

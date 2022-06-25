@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace TMetric.Abstractions;
 
@@ -43,6 +42,7 @@ public record class Invoice
 
     public int ClientId { get; set; }
 
+    [StringLength( 3, MinimumLength = 3 )]
     public string Currency { get; set; }
 
     public decimal DiscountAmount { get; set; }
@@ -55,13 +55,15 @@ public record class Invoice
 
     public DateOnly IssueDate { get; set; }
 
-    public InvoiceItem[] Items { get; set; }
+    public InvoiceItem[]? Items { get; set; }
 
-    public string PurchaseOrderNumber { get; set; }
+    [MaxLength( 30 )]
+    public string? PurchaseOrderNumber { get; set; }
 
     public InvoiceStatus Status { get; set; }
 
-    public string Subject { get; set; }
+    [MaxLength( 200 )]
+    public string? Subject { get; set; }
 
     public decimal SubtotalAmount { get; set; }
 
@@ -71,14 +73,15 @@ public record class Invoice
 
     public decimal TotalAmount { get; set; }
 
+    [MaxLength( 30 )]
     public string TextId { get; set; }
 }
 
 public record class InvoiceItem
 {
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
-    public string ItemType { get; set; }
+    public string? ItemType { get; set; }
 
     public decimal UnitAmount { get; set; }
 
