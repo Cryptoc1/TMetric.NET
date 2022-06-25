@@ -23,6 +23,9 @@ public sealed class InvoiceOperations : IInvoiceOperations
         var options = optionsAccessor.Value;
 
         var response = await http.PostAsJsonAsync( $"accounts/{accountId}/invoices", parameters, options.SerializerOptions, cancellation );
+
+        var content = await response.Content.ReadAsStringAsync(cancellation);
+
         var invoice = await response.Content.ReadFromJsonAsync<Invoice>( options.SerializerOptions, cancellation );
         return invoice!;
     }
