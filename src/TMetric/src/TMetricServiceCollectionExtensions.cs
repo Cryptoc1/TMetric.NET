@@ -23,7 +23,8 @@ public static class TMetricServiceCollectionExtensions
             .AddHttpClient<ITMetricClient, TMetricClient>( Strings.ApiClientName, http => http.BaseAddress = new Uri( Strings.DefaultApiAddress ) )
             .AddHttpMessageHandler<AuthorizationHandler>()
             .AddTypedClient<IClientOperations, ClientOperations>()
-            .AddTypedClient<IInvoiceOperations, InvoiceOperations>();
+            .AddTypedClient<IInvoiceOperations, InvoiceOperations>()
+            .AddTypedClient<IProjectOperations, ProjectOperations>();
 
         return services;
     }

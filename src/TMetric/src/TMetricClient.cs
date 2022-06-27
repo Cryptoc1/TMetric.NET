@@ -10,16 +10,20 @@ public sealed class TMetricClient : ITMetricClient
 
     public IInvoiceOperations Invoices { get; }
 
+    public IProjectOperations Projects { get; }
+
     public TMetricClient(
         IClientOperations clients,
         HttpClient http,
-        IInvoiceOperations invoices
+        IInvoiceOperations invoices,
+        IProjectOperations projects
     )
     {
         this.http = http;
 
         Clients = clients;
         Invoices = invoices;
+        Projects = projects;
     }
 
     public Task<string> Version( CancellationToken cancellation = default )

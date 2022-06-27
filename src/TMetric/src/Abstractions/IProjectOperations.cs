@@ -27,6 +27,8 @@ public record class ProjectLite
 
     public string? BudgetCurrency { get; set; }
 
+    public decimal BudgetSize { get; set; }
+
     public int? ClientId { get; set; }
 
     public int GroupCount { get; set; }
@@ -35,8 +37,12 @@ public record class ProjectLite
 
     public int MemberCount { get; set; }
 
+    public string? Notes { get; set; }
+
     [MaxLength( 16 )]
     public string? ProjectCode { get; set; }
+
+    public decimal ProjectFee { get; set; }
 
     public int ProjectId { get; set; }
 

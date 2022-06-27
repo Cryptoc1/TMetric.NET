@@ -19,6 +19,7 @@ public record class CreateInvoiceParameters
     [Required]
     public DateTime EndTime { get; set; }
 
+    [Required]
     public ICollection<int> Projects { get; set; } = new List<int>();
 
     [Required]

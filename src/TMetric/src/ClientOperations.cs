@@ -5,7 +5,7 @@ namespace TMetric;
 
 public sealed class ClientOperations : IClientOperations
 {
-    public readonly HttpClient http;
+    private readonly HttpClient http;
     private readonly IOptions<TMetricOptions> optionsAccessor;
 
     public ClientOperations( HttpClient http, IOptions<TMetricOptions> optionsAccessor )

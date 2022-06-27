@@ -6,7 +6,7 @@ namespace TMetric;
 
 public sealed class InvoiceOperations : IInvoiceOperations
 {
-    public readonly HttpClient http;
+    private readonly HttpClient http;
     private readonly IOptions<TMetricOptions> optionsAccessor;
 
     public InvoiceOperations( HttpClient http, IOptions<TMetricOptions> optionsAccessor )
@@ -21,10 +21,7 @@ public sealed class InvoiceOperations : IInvoiceOperations
         Validator.ValidateObject( parameters, new( parameters ) );
 
         var options = optionsAccessor.Value;
-
         var response = await http.PostAsJsonAsync( $"accounts/{accountId}/invoices", parameters, options.SerializerOptions, cancellation );
-
-        var content = await response.Content.ReadAsStringAsync(cancellation);
 
         var invoice = await response.Content.ReadFromJsonAsync<Invoice>( options.SerializerOptions, cancellation );
         return invoice!;
