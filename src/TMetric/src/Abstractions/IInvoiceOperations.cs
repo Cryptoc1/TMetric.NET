@@ -6,6 +6,8 @@ public interface IInvoiceOperations
 {
     Task<Invoice> Create( int accountId, CreateInvoiceParameters parameters, CancellationToken cancellation = default );
 
+    Task<InvoiceExcel> Excel( int accountId, int invoiceId, CancellationToken cancellation = default );
+
     Task<Invoice[]> Get( int accountId, GetInvoicesParameters parameters, CancellationToken cancellation = default );
 
     Task<Invoice> Get( int accountId, int invoiceId, CancellationToken cancellation = default );
@@ -76,6 +78,39 @@ public record class Invoice
 
     [MaxLength( 30 )]
     public string TextId { get; set; }
+}
+
+public sealed class InvoiceExcel : Stream
+{
+    public override bool CanRead => source.CanRead;
+
+    public override bool CanSeek => source.CanSeek;
+
+    public override bool CanWrite => source.CanWrite;
+
+    public override long Length => source.Length;
+
+    public string Name { get; private set; }
+
+    public override long Position { get => source.Position; set => source.Position = value; }
+
+    private readonly Stream source;
+
+    public InvoiceExcel( string name, Stream source )
+    {
+        Name = name;
+        this.source = source;
+    }
+
+    public override void Flush( ) => source.Flush();
+
+    public override int Read( byte[] buffer, int offset, int count ) => source.Read( buffer, offset, count );
+
+    public override long Seek( long offset, SeekOrigin origin ) => source.Seek( offset, origin );
+
+    public override void SetLength( long value ) => source.SetLength( value );
+
+    public override void Write( byte[] buffer, int offset, int count ) => source.Write( buffer, offset, count );
 }
 
 public record class InvoiceItem

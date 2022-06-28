@@ -27,6 +27,15 @@ public sealed class InvoiceOperations : IInvoiceOperations
         return invoice!;
     }
 
+    public async Task<InvoiceExcel> Excel( int accountId, int invoiceId, CancellationToken cancellation = default )
+    {
+        using var response = await http.GetAsync( $"accounts/{accountId}/invoices/{invoiceId}/xlsx", cancellation );
+        var data = await response.Content.ReadAsStreamAsync( cancellation );
+
+        var disposition = response.Content.Headers.ContentDisposition!;
+        return new( disposition.FileName!, data );
+    }
+
     public Task<Invoice[]> Get( int accountId, GetInvoicesParameters parameters, CancellationToken cancellation )
     {
         ArgumentNullException.ThrowIfNull( parameters );
