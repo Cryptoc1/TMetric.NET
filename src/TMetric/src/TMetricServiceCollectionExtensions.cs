@@ -1,17 +1,19 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TMetric.Abstractions;
-using TMetric.Json;
 
 namespace TMetric;
 
+/// <summary> Extensions to <see cref="IServiceCollection"/> for registering and configuring TMetric services. </summary>
 public static class TMetricServiceCollectionExtensions
 {
+    /// <summary> Add TMetric services to the given <paramref name="services"/>. </summary>
+    /// <param name="services"> The service collection TMetric services are to be added. </param>
+    /// <param name="configure"> A delegate that may configure TMetric service options. </param>
     public static IServiceCollection AddTMetric( this IServiceCollection services, Action<TMetricOptions>? configure = null )
     {
         ArgumentNullException.ThrowIfNull( services );
 
         var optionsBuilder = services.AddOptions<TMetricOptions>()
-            .Configure( ConfigureDefaultOptions )
             .ValidateDataAnnotations();
 
         if( configure is not null )
@@ -27,12 +29,5 @@ public static class TMetricServiceCollectionExtensions
             .AddTypedClient<IProjectOperations, ProjectOperations>();
 
         return services;
-    }
-
-    private static void ConfigureDefaultOptions( TMetricOptions options )
-    {
-        ArgumentNullException.ThrowIfNull( options );
-
-        options.SerializerOptions.Converters.Add( new DateOnlyConverter() );
     }
 }

@@ -13,10 +13,27 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TMetric.NET", "TMetric.NET", "{7D42DDE4-E83C-4E60-B98D-1C37DB692105}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.filenesting.json = .filenesting.json
 		.gitignore = .gitignore
+		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMetric", "src\TMetric\src\TMetric.csproj", "{2AD75392-8E1B-404C-9DD5-FCCCB5281DA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMetric.NET", "src\TMetric\src\TMetric.NET.csproj", "{2AD75392-8E1B-404C-9DD5-FCCCB5281DA3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMetric.NET.Extensions", "src\Extensions\src\TMetric.NET.Extensions.csproj", "{86F5AB69-91FF-40C8-8B9A-CB952F686F41}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0BB7B4D9-8C94-487C-BDDC-CD2AD10520FC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMetric.NET.Extensions.Tests", "src\Extensions\test\TMetric.NET.Extensions.Tests.csproj", "{8DA244C2-F84F-4EC7-8FD0-0F5505C930E4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TMetric.NET.Tests", "src\TMetric\test\TMetric.NET.Tests.csproj", "{2B5F8E3B-7698-4356-A98E-035D59367294}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{5043587A-F6B2-4A46-9EB9-0B775130079F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{38AF4589-CB30-4E36-9D70-6C14C3A926EE}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\default.yml = .github\workflows\default.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,12 +45,29 @@ Global
 		{2AD75392-8E1B-404C-9DD5-FCCCB5281DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AD75392-8E1B-404C-9DD5-FCCCB5281DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AD75392-8E1B-404C-9DD5-FCCCB5281DA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86F5AB69-91FF-40C8-8B9A-CB952F686F41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86F5AB69-91FF-40C8-8B9A-CB952F686F41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86F5AB69-91FF-40C8-8B9A-CB952F686F41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86F5AB69-91FF-40C8-8B9A-CB952F686F41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DA244C2-F84F-4EC7-8FD0-0F5505C930E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DA244C2-F84F-4EC7-8FD0-0F5505C930E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DA244C2-F84F-4EC7-8FD0-0F5505C930E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DA244C2-F84F-4EC7-8FD0-0F5505C930E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B5F8E3B-7698-4356-A98E-035D59367294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B5F8E3B-7698-4356-A98E-035D59367294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B5F8E3B-7698-4356-A98E-035D59367294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B5F8E3B-7698-4356-A98E-035D59367294}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2AD75392-8E1B-404C-9DD5-FCCCB5281DA3} = {5C85A7A2-A9A4-4EC9-B290-C62320A1D366}
+		{86F5AB69-91FF-40C8-8B9A-CB952F686F41} = {5C85A7A2-A9A4-4EC9-B290-C62320A1D366}
+		{0BB7B4D9-8C94-487C-BDDC-CD2AD10520FC} = {5C85A7A2-A9A4-4EC9-B290-C62320A1D366}
+		{8DA244C2-F84F-4EC7-8FD0-0F5505C930E4} = {0BB7B4D9-8C94-487C-BDDC-CD2AD10520FC}
+		{2B5F8E3B-7698-4356-A98E-035D59367294} = {0BB7B4D9-8C94-487C-BDDC-CD2AD10520FC}
+		{38AF4589-CB30-4E36-9D70-6C14C3A926EE} = {5043587A-F6B2-4A46-9EB9-0B775130079F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DB6436EB-AF9C-4F47-BD3F-27C49DDCDF97}

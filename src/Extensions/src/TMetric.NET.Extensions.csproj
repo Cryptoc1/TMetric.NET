@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>Common patterns and utilities for working with the TMetric API via TMetric.NET.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RootNamespace>TMetric.Extensions</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="True" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\TMetric\src\TMetric.NET.csproj" />
+    </ItemGroup>
+
+</Project>

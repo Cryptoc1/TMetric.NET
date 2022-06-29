@@ -1,5 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <Description>Unofficial .NET wrapper of the TMetric REST APIs.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RootNamespace>TMetric</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="$(SrcDirectory)\..\README.md" Pack="True" PackagePath="\" />
+    </ItemGroup>
+    
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
