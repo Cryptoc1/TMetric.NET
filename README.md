@@ -5,7 +5,7 @@
 *Unofficial .NET wrapper of the TMetric REST APIs.*
 
 ![Language](https://img.shields.io/github/languages/top/cryptoc1/tmetric.net)
-![Dependencies](https://img.shields.io/librariesio/github/cryptoc1/tmetric.net)
+[![Dependencies](https://img.shields.io/librariesio/github/cryptoc1/tmetric.net)](https://libraries.io/nuget/TMetric.NET)
 [![Checks](https://img.shields.io/github/checks-status/cryptoc1/tmetric.net/develop)](https://github.com/Cryptoc1/tmetric.net/actions/workflows/default.yml)
 [![Coverage](https://img.shields.io/codecov/c/github/cryptoc1/tmetric.net)](https://app.codecov.io/gh/Cryptoc1/tmetric.net/)
 [![Version](https://img.shields.io/nuget/vpre/TMetric.NET)](https://www.nuget.org/packages/TMetric.NET)
