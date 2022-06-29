@@ -54,10 +54,10 @@ public sealed class ClientOperationsTests
             string path = request.RequestUri!.AbsolutePath;
             var response = path switch
             {
-                "accounts/0/clients" => Clients( request ),
-                "accounts/0/clients/0" => Client( request ),
+                "/accounts/0/clients" => Clients( request ),
+                "/accounts/0/clients/0" => Client( request ),
 
-                _ => throw new InvalidOperationException( $"Route not supported by {GetType().Name}. Add it, or get over it. :)" ),
+                _ => throw new InvalidOperationException( $"Route '{path}' not supported by {GetType().Name}. Add it, or get over it. :)" ),
             };
 
             return Task.FromResult( response );
