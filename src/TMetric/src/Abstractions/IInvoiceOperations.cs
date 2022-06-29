@@ -11,12 +11,17 @@ public interface IInvoiceOperations
     Task<Invoice[]> Get( int accountId, GetInvoicesParameters parameters, CancellationToken cancellation = default );
 
     Task<Invoice> Get( int accountId, int invoiceId, CancellationToken cancellation = default );
+
+    Task Put( int accountId, Invoice invoice, CancellationToken cancellation = default );
 }
 
 public record class CreateInvoiceParameters
 {
     [Required]
     public int ClientId { get; set; }
+
+    [Required]
+    public InvoiceType InvoiceType { get; set; }
 
     [Required]
     public DateTime EndTime { get; set; }
@@ -52,9 +57,11 @@ public record class Invoice
 
     public double DiscountPercents { get; set; }
 
-    public uint DueDays { get; set; }
+    public int DueDays { get; set; }
 
     public int InvoiceId { get; set; }
+
+    public InvoiceType InvoiceType { get; set; }
 
     public DateOnly IssueDate { get; set; }
 
@@ -126,9 +133,17 @@ public record class InvoiceItem
     public decimal UnitPrice { get; set; }
 }
 
-public enum InvoiceStatus
+public enum InvoiceStatus : int
 {
     Draft,
     Sent,
     Paid,
+}
+
+public enum InvoiceType : int
+{
+    ByPersonHours,
+    ByProjectHours,
+    ByTaskHours,
+    DetailedLineItems,
 }

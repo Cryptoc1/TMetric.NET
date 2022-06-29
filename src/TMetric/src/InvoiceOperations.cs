@@ -15,7 +15,8 @@ public sealed class InvoiceOperations : IInvoiceOperations
         this.optionsAccessor = optionsAccessor;
     }
 
-    public async Task<Invoice> Create( int accountId, CreateInvoiceParameters parameters, CancellationToken cancellation = default )
+    /// <inheritdoc/>
+    public async Task<Invoice> Create( int accountId, CreateInvoiceParameters parameters, CancellationToken cancellation )
     {
         ArgumentNullException.ThrowIfNull( parameters );
         Validator.ValidateObject( parameters, new( parameters ) );
@@ -27,15 +28,19 @@ public sealed class InvoiceOperations : IInvoiceOperations
         return invoice!;
     }
 
-    public async Task<InvoiceExcel> Excel( int accountId, int invoiceId, CancellationToken cancellation = default )
+    /// <inheritdoc/>
+    public async Task<InvoiceExcel> Excel( int accountId, int invoiceId, CancellationToken cancellation )
     {
-        using var response = await http.GetAsync( $"accounts/{accountId}/invoices/{invoiceId}/xlsx", cancellation );
-        var data = await response.Content.ReadAsStreamAsync( cancellation );
+        var response = await http.GetAsync( $"accounts/{accountId}/invoices/{invoiceId}/xlsx", cancellation );
+        _ = response.EnsureSuccessStatusCode();
 
-        var disposition = response.Content.Headers.ContentDisposition!;
-        return new( disposition.FileName!, data );
+        return new(
+            response.Content.Headers.ContentDisposition!.FileName!,
+            await response.Content.ReadAsStreamAsync( cancellation )
+        );
     }
 
+    /// <inheritdoc/>
     public Task<Invoice[]> Get( int accountId, GetInvoicesParameters parameters, CancellationToken cancellation )
     {
         ArgumentNullException.ThrowIfNull( parameters );
@@ -68,6 +73,23 @@ public sealed class InvoiceOperations : IInvoiceOperations
         return http.GetFromJsonAsync<Invoice[]>( $"accounts/{accountId}/invoices{query}", optionsAccessor.Value.SerializerOptions, cancellation )!;
     }
 
+    /// <inheritdoc/>
     public Task<Invoice> Get( int accountId, int invoiceId, CancellationToken cancellation )
         => http.GetFromJsonAsync<Invoice>( $"accounts/{accountId}/invoices/{invoiceId}", optionsAccessor.Value.SerializerOptions, cancellation )!;
+
+    /// <inheritdoc/>
+    public async Task Put( int accountId, Invoice invoice, CancellationToken cancellation )
+    {
+        ArgumentNullException.ThrowIfNull( invoice );
+        Validator.ValidateObject( invoice, new( invoice ) );
+
+        using var response = await http.PutAsJsonAsync(
+            $"accounts/{accountId}/invoices/{invoice.InvoiceId}",
+            invoice,
+            optionsAccessor.Value.SerializerOptions,
+            cancellation
+        );
+
+        _ = response.EnsureSuccessStatusCode();
+    }
 }

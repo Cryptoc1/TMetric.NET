@@ -11,5 +11,6 @@ public sealed class DateOnlyConverter : JsonConverter<DateOnly>
         return DateOnly.FromDateTime( date );
     }
 
-    public override void Write( Utf8JsonWriter writer, DateOnly value, JsonSerializerOptions options ) => throw new NotImplementedException();
+    public override void Write( Utf8JsonWriter writer, DateOnly value, JsonSerializerOptions options )
+        => writer.WriteStringValue( value.ToDateTime( TimeOnly.MinValue ) );
 }

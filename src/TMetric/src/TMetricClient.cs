@@ -26,6 +26,6 @@ public sealed class TMetricClient : ITMetricClient
         Projects = projects;
     }
 
-    public Task<string> Version( CancellationToken cancellation = default )
-        => http.GetStringAsync( "version" );
+    public Task<string> Version( CancellationToken cancellation )
+        => http.GetStringAsync( "version", cancellation );
 }
