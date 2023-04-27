@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Options;
 using TMetric.Abstractions;
+using TMetric.Abstractions.V2;
 
 namespace TMetric;
 

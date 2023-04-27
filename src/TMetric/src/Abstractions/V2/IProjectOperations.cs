@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TMetric.Abstractions;
+namespace TMetric.Abstractions.V2;
 
 public interface IProjectOperations
 {

@@ -22,7 +22,7 @@ var services = new ServiceCollection()
 var tmetric = services.GetService<ITMetricClient>();
 
 int clientId = ...;
-var client = await tmetric.Clients.Get( clientId );
+var client = await tmetric.V2.Clients.Get( clientId );
 
 Console.WriteLine( $"Client: {client.ClientName} {client.ClientId}" );
 ```

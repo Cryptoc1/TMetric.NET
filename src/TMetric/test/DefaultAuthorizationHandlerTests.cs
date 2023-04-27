@@ -49,13 +49,15 @@ public sealed class DefaultAuthorizationHandlerTests
 
     private sealed class TestResponseHandler : HttpMessageHandler
     {
-        protected override async Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
-            => new HttpResponseMessage
-            {
-                Content = new StringContent( "Hello, World!" ),
-                ReasonPhrase = nameof( HttpStatusCode.OK ),
-                RequestMessage = request,
-                StatusCode = HttpStatusCode.OK,
-            };
+        protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
+            => Task.FromResult(
+                new HttpResponseMessage
+                {
+                    Content = new StringContent( "Hello, World!" ),
+                    ReasonPhrase = nameof( HttpStatusCode.OK ),
+                    RequestMessage = request,
+                    StatusCode = HttpStatusCode.OK,
+                }
+            );
     }
 }

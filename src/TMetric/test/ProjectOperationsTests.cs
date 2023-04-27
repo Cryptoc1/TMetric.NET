@@ -2,13 +2,14 @@
 using System.Net.Http.Json;
 using Microsoft.Extensions.Options;
 using TMetric.Abstractions;
+using V2 = TMetric.Abstractions.V2;
 
 namespace TMetric.Tests;
 
 public sealed class ProjectOperationsTests
 {
     [Fact]
-    public async Task Operations_gets_projects( )
+    public async Task Gets_projects( )
     {
         using var http = new HttpClient( new ProjectsTestHandler() )
         {
@@ -25,7 +26,7 @@ public sealed class ProjectOperationsTests
     {
         private static HttpResponseMessage Projects( HttpRequestMessage request ) => new( HttpStatusCode.OK )
         {
-            Content = JsonContent.Create( new[] { new ProjectLite(), new ProjectLite() } ),
+            Content = JsonContent.Create( new[] { new V2.ProjectLite(), new V2.ProjectLite() } ),
             RequestMessage = request,
         };
 

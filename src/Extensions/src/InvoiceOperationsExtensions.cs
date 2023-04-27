@@ -1,4 +1,4 @@
-﻿using TMetric.Abstractions;
+﻿using TMetric.Abstractions.V2;
 
 namespace TMetric.Extensions;
 
