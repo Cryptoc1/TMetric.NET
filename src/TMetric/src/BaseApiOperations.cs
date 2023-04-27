@@ -3,12 +3,12 @@ using TMetric.Abstractions;
 
 namespace TMetric;
 
-public abstract class ApiOperations
+public abstract class BaseApiOperations
 {
     protected readonly HttpClient Http;
     protected readonly IOptions<TMetricOptions> Options;
 
-    protected ApiOperations( HttpClient http, IOptions<TMetricOptions> options )
+    protected BaseApiOperations( HttpClient http, IOptions<TMetricOptions> options )
     {
         Http = http;
         Options = options;

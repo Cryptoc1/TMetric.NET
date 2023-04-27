@@ -28,12 +28,13 @@ public static class TMetricServiceExtensions
 
             .AddHttpClient( Strings.ApiClientName, http => http.BaseAddress = new Uri( Strings.DefaultApiAddress ) )
             .AddHttpMessageHandler<AuthorizationHandler>()
-            .AddTypedClient<IVersion2Api, Version2Api>()
+            .AddTypedClient<V2.IApiOperations, Version2Operations>()
             .AddTypedClient<V2.IClientOperations, ClientV2Operations>()
             .AddTypedClient<V2.IInvoiceOperations, InvoiceOperations>()
-            .AddTypedClient<V2.IProjectOperations, ProjectOperations>()
-            .AddTypedClient<IVersion3Api, Version3Api>()
-            .AddTypedClient<V3.IClientOperations, ClientV3Operations>();
+            .AddTypedClient<V2.IProjectOperations, ProjectV2Operations>()
+            .AddTypedClient<V3.IApiOperations, Version3Operations>()
+            .AddTypedClient<V3.IClientOperations, ClientV3Operations>()
+            .AddTypedClient<V3.ITimeEntryOperations, TimeEntryV3Operations>();
 
         return services;
     }

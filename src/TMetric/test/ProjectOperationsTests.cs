@@ -16,7 +16,7 @@ public sealed class ProjectOperationsTests
             BaseAddress = new Uri( "https://localhost:8080/" ),
         };
 
-        var operations = new ProjectOperations( http, Options.Create<TMetricOptions>( new() ) );
+        var operations = new ProjectV2Operations( http, Options.Create<TMetricOptions>( new() ) );
         var projects = await operations.Get( 0, new() );
 
         Assert.NotEmpty( projects );

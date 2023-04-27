@@ -71,7 +71,7 @@ public sealed class ClientOperationsTests
 
         private static HttpResponseMessage ClientsV3( HttpRequestMessage request ) => new( HttpStatusCode.OK )
         {
-            Content = JsonContent.Create( new[] { new V3.Client(), new V3.Client() } ),
+            Content = JsonContent.Create( new[] { new V3.ClientBasic(), new V3.ClientBasic() } ),
             RequestMessage = request,
         };
 

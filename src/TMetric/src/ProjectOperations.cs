@@ -5,12 +5,12 @@ using TMetric.Abstractions.V2;
 
 namespace TMetric;
 
-public sealed class ProjectOperations : IProjectOperations
+public sealed class ProjectV2Operations : IProjectOperations
 {
     private readonly HttpClient http;
     private readonly IOptions<TMetricOptions> optionsAccessor;
 
-    public ProjectOperations( HttpClient http, IOptions<TMetricOptions> optionsAccessor )
+    public ProjectV2Operations( HttpClient http, IOptions<TMetricOptions> optionsAccessor )
     {
         this.http = http;
         this.optionsAccessor = optionsAccessor;

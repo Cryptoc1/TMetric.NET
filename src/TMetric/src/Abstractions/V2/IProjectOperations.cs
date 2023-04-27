@@ -55,10 +55,3 @@ public record class ProjectLite
 
     public decimal TotalBudget { get; set; }
 }
-
-public enum ProjectStatus
-{
-    Active,
-    Done,
-    Archived,
-}

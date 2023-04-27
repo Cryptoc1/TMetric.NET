@@ -56,17 +56,17 @@ public sealed class InvoiceOperations : IInvoiceOperations
             }
         }
 
-        if( parameters.EndDate is not null )
+        if( parameters.EndDate.HasValue )
         {
-            _ = query.Add( "EndDate", parameters.EndDate.Value.ToString( "yyyyMMdd" ) );
+            _ = query.Add( "EndDate", parameters.EndDate.Value.ToQueryString() );
         }
 
-        if( parameters.StartDate is not null )
+        if( parameters.StartDate.HasValue )
         {
-            _ = query.Add( "StartDate", parameters.StartDate.Value.ToString( "yyyyMMdd" ) );
+            _ = query.Add( "StartDate", parameters.StartDate.Value.ToQueryString() );
         }
 
-        if( parameters.Status is not null )
+        if( parameters.Status.HasValue )
         {
             _ = query.Add( "Status", ( ( int )parameters.Status ).ToString() );
         }

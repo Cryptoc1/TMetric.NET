@@ -6,15 +6,15 @@ namespace TMetric;
 
 public sealed class TMetricClient : ITMetricClient
 {
-    public IVersion2Api V2 { get; }
+    public V2.IApiOperations V2 { get; }
 
-    public IVersion3Api V3 { get; }
+    public V3.IApiOperations V3 { get; }
 
-    public TMetricClient( IVersion2Api v2, IVersion3Api v3 )
+    public TMetricClient( V2.IApiOperations v2, V3.IApiOperations v3 )
         => (V2, V3) = (v2, v3);
 }
 
-public sealed class Version2Api : IVersion2Api
+public sealed class Version2Operations : V2.IApiOperations
 {
     private readonly HttpClient http;
 
@@ -24,7 +24,7 @@ public sealed class Version2Api : IVersion2Api
 
     public V2.IProjectOperations Projects { get; }
 
-    public Version2Api(
+    public Version2Operations(
         HttpClient http,
         V2.IClientOperations clients,
         V2.IInvoiceOperations invoices,
@@ -42,10 +42,12 @@ public sealed class Version2Api : IVersion2Api
         => http.GetStringAsync( "version", cancellation );
 }
 
-public sealed class Version3Api : IVersion3Api
+public sealed class Version3Operations : V3.IApiOperations
 {
     public V3.IClientOperations Clients { get; }
 
-    public Version3Api( V3.IClientOperations clients )
-        => Clients = clients;
+    public V3.ITimeEntryOperations TimeEntries { get; }
+
+    public Version3Operations( V3.IClientOperations clients, V3.ITimeEntryOperations timeEntries )
+        => (Clients, TimeEntries) = (clients, timeEntries);
 }
