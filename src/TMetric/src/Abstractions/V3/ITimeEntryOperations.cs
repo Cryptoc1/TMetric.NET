@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TMetric.Abstractions.V3;
 
@@ -18,7 +19,7 @@ public record class GetTimeEntriesParameters
 
 public record class TimeEntry
 {
-    public DateTime? EndTime { get; set; }
+    public DateTimeOffset? EndTime { get; set; }
 
     public int Id { get; set; }
 
@@ -31,7 +32,9 @@ public record class TimeEntry
 
     public ProjectBasic? Project { get; set; }
 
-    public DateTime? StartTime { get; set; }
+    public DateTimeOffset? StartTime { get; set; }
+
+    public TagBasic[] Tags { get; set; } = Array.Empty<TagBasic>();
 
     public TaskBasic? Task { get; set; }
 }
@@ -47,7 +50,18 @@ public record class ProjectBasic
     [MaxLength( 255 )]
     public string Name { get; set; }
 
+    [JsonConverter( typeof( JsonStringEnumConverter ) )]
     public ProjectStatus Status { get; set; }
+}
+
+public record class TagBasic
+{
+    public int Id { get; set; }
+
+    public bool IsWorkType { get; set; }
+
+    [MaxLength( 50 )]
+    public string Name { get; set; }
 }
 
 public record class TaskBasic

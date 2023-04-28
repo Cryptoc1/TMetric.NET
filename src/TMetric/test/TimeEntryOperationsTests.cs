@@ -24,7 +24,6 @@ public sealed class TimeEntryOperationsTests
 
     private sealed class TimeEntryTestHandler : HttpMessageHandler
     {
-
         private static HttpResponseMessage TimeEntriesV3( HttpRequestMessage request ) => new( HttpStatusCode.OK )
         {
             Content = JsonContent.Create( new[] { new V3.TimeEntry(), new V3.TimeEntry() } ),
