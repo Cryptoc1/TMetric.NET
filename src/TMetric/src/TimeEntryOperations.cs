@@ -23,12 +23,12 @@ public sealed class TimeEntryV3Operations : BaseApiOperations, V3.ITimeEntryOper
 
         if( parameters.EndDate.HasValue )
         {
-            _ = query.Add( "EndDate", parameters.EndDate.Value.ToQueryString() );
+            _ = query.Add( "endDate", parameters.EndDate.Value.ToString( "yyyy-MM-dd" ) );
         }
 
         if( parameters.StartDate.HasValue )
         {
-            _ = query.Add( "StartDate", parameters.StartDate.Value.ToQueryString() );
+            _ = query.Add( "startDate", parameters.StartDate.Value.ToString( "yyyy-MM-dd" ) );
         }
 
         return Http.GetFromJsonAsync<V3.TimeEntry[]>( $"v3/accounts/{accountId}/timeentries{query}", Options.Value.SerializerOptions, cancellation )!;

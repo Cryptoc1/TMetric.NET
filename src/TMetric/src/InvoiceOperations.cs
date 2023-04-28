@@ -58,12 +58,12 @@ public sealed class InvoiceOperations : IInvoiceOperations
 
         if( parameters.EndDate.HasValue )
         {
-            _ = query.Add( "EndDate", parameters.EndDate.Value.ToQueryString() );
+            _ = query.Add( "EndDate", parameters.EndDate.Value.ToString( "yyyyMMdd" ) );
         }
 
         if( parameters.StartDate.HasValue )
         {
-            _ = query.Add( "StartDate", parameters.StartDate.Value.ToQueryString() );
+            _ = query.Add( "StartDate", parameters.StartDate.Value.ToString( "yyyyMMdd" ) );
         }
 
         if( parameters.Status.HasValue )
