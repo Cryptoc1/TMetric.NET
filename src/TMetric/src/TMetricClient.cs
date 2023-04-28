@@ -48,6 +48,6 @@ public sealed class Version3Operations : V3.IApiOperations
 
     public V3.ITimeEntryOperations TimeEntries { get; }
 
-    public Version3Operations( V3.IClientOperations clients, V3.ITimeEntryOperations timeEntries )
+    public Version3Operations( HttpClient _, V3.IClientOperations clients, V3.ITimeEntryOperations timeEntries )
         => (Clients, TimeEntries) = (clients, timeEntries);
 }
