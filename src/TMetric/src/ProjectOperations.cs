@@ -37,4 +37,7 @@ public sealed class ProjectV2Operations : IProjectOperations
 
         return http.GetFromJsonAsync<ProjectLite[]>( $"accounts/{accountId}/projects{query}", optionsAccessor.Value.SerializerOptions, cancellation )!;
     }
+
+    public Task<Project> Get( int accountId, int projectId, CancellationToken cancellation = default )
+        => http.GetFromJsonAsync<Project>( $"accounts/{accountId}/projects/{projectId}", optionsAccessor.Value.SerializerOptions, cancellation )!;
 }
