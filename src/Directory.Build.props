@@ -20,7 +20,7 @@
         <RunAnalyzers>true</RunAnalyzers>
         <RunCodeAnalysis>false</RunCodeAnalysis>
 
-        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <!-- Git Versioning + Metadata -->
