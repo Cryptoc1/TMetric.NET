@@ -1,7 +1,7 @@
 ﻿name: default
 
 env:
-  TMETRIC_DOTNET_VERSION: 6.0.408
+  TMETRIC_DOTNET_VERSION: 6.0.410
   DOTNET_NOLOGO: true
 
 on:   

@@ -6,6 +6,8 @@ public interface IInvoiceOperations
 {
     Task<Invoice> Create( int accountId, CreateInvoiceParameters parameters, CancellationToken cancellation = default );
 
+    Task Delete( int accountId, int invoiceId, CancellationToken cancellation = default );
+
     Task<InvoiceExcel> Excel( int accountId, int invoiceId, CancellationToken cancellation = default );
 
     Task<Invoice[]> Get( int accountId, GetInvoicesParameters parameters, CancellationToken cancellation = default );

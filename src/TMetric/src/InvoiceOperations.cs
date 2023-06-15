@@ -23,16 +23,23 @@ public sealed class InvoiceOperations : IInvoiceOperations
         Validator.ValidateObject( parameters, new( parameters ) );
 
         var options = optionsAccessor.Value;
-        var response = await http.PostAsJsonAsync( $"accounts/{accountId}/invoices", parameters, options.SerializerOptions, cancellation );
+        using var response = await http.PostAsJsonAsync( $"accounts/{accountId}/invoices", parameters, options.SerializerOptions, cancellation );
 
         var invoice = await response.Content.ReadFromJsonAsync<Invoice>( options.SerializerOptions, cancellation );
         return invoice!;
     }
 
     /// <inheritdoc/>
+    public async Task Delete( int accountId, int invoiceId, CancellationToken cancellation )
+    {
+        var response = await http.DeleteAsync( $"accounts/{accountId}/invoices/{invoiceId}", cancellation );
+        _ = response.EnsureSuccessStatusCode();
+    }
+
+    /// <inheritdoc/>
     public async Task<InvoiceExcel> Excel( int accountId, int invoiceId, CancellationToken cancellation )
     {
-        var response = await http.GetAsync( $"accounts/{accountId}/invoices/{invoiceId}/xlsx", cancellation );
+        using var response = await http.GetAsync( $"accounts/{accountId}/invoices/{invoiceId}/xlsx", cancellation );
         _ = response.EnsureSuccessStatusCode();
 
         return new(
