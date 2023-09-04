@@ -25,14 +25,17 @@ public sealed class InvoiceOperations : IInvoiceOperations
         var options = optionsAccessor.Value;
         using var response = await http.PostAsJsonAsync( $"accounts/{accountId}/invoices", parameters, options.SerializerOptions, cancellation );
 
-        var invoice = await response.Content.ReadFromJsonAsync<Invoice>( options.SerializerOptions, cancellation );
+        var invoice = await response.EnsureSuccessStatusCode()
+            .Content
+            .ReadFromJsonAsync<Invoice>( options.SerializerOptions, cancellation );
+
         return invoice!;
     }
 
     /// <inheritdoc/>
     public async Task Delete( int accountId, int invoiceId, CancellationToken cancellation )
     {
-        var response = await http.DeleteAsync( $"accounts/{accountId}/invoices/{invoiceId}", cancellation );
+        using var response = await http.DeleteAsync( $"accounts/{accountId}/invoices/{invoiceId}", cancellation );
         _ = response.EnsureSuccessStatusCode();
     }
 
