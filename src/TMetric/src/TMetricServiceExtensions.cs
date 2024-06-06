@@ -1,41 +1,47 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using TMetric.Abstractions;
-using V2 = TMetric.Abstractions.V2;
-using V3 = TMetric.Abstractions.V3;
 
 namespace TMetric;
 
 /// <summary> Extensions to <see cref="IServiceCollection"/> for registering and configuring TMetric services. </summary>
 public static class TMetricServiceExtensions
 {
-    /// <summary> Add TMetric services to the given <paramref name="services"/>. </summary>
-    /// <param name="services"> The service collection TMetric services are to be added. </param>
-    /// <param name="configure"> A delegate that may configure TMetric service options. </param>
-    public static IServiceCollection AddTMetric( this IServiceCollection services, Action<TMetricOptions>? configure = null )
+    public static IServiceCollection AddTMetric( this IServiceCollection services, Action<IHttpClientBuilder>? configure = default )
     {
         ArgumentNullException.ThrowIfNull( services );
 
-        var optionsBuilder = services.AddOptions<TMetricOptions>()
-            .ValidateDataAnnotations();
-
-        if( configure is not null )
-        {
-            _ = optionsBuilder.Configure( configure );
-        }
-
-        _ = services.AddTransient<ITMetricClient, TMetricClient>()
-            .AddTransient<AuthorizationHandler, DefaultAuthorizationHandler>()
-
-            .AddHttpClient( Strings.ApiClientName, http => http.BaseAddress = new Uri( Strings.DefaultApiAddress ) )
-            .AddHttpMessageHandler<AuthorizationHandler>()
-            .AddTypedClient<V2.IApiOperations, Version2Operations>()
-            .AddTypedClient<V2.IClientOperations, ClientV2Operations>()
-            .AddTypedClient<V2.IInvoiceOperations, InvoiceOperations>()
-            .AddTypedClient<V2.IProjectOperations, ProjectV2Operations>()
-            .AddTypedClient<V3.IApiOperations, Version3Operations>()
-            .AddTypedClient<V3.IClientOperations, ClientV3Operations>()
-            .AddTypedClient<V3.ITimeEntryOperations, TimeEntryV3Operations>();
+        var builder = services.AddHttpClient<ITMetricApi, TMetricApi>( http => http.BaseAddress = new Uri( TMetricDefaults.ApiAddress ) );
+        configure?.Invoke( builder );
 
         return services;
     }
+
+    public static IHttpClientBuilder BindApiCredential( this IHttpClientBuilder builder, string key = "TMetric:ApiKey" )
+    {
+        ArgumentNullException.ThrowIfNull( builder );
+        ArgumentException.ThrowIfNullOrWhiteSpace( key );
+
+        return builder.AddHttpMessageHandler(
+            serviceProvider => new AuthorizationHandler(
+                new BoundApiCredential( serviceProvider.GetRequiredService<IConfiguration>(), key ) ) );
+    }
+
+    public static IHttpClientBuilder UseApiCredential<[DynamicallyAccessedMembers( DynamicallyAccessedMemberTypes.PublicConstructors )] TCredential>( this IHttpClientBuilder builder )
+        where TCredential : ApiCredential
+    {
+        ArgumentNullException.ThrowIfNull( builder );
+
+        return builder.AddHttpMessageHandler(
+            serviceProvider => new AuthorizationHandler(
+                ActivatorUtilities.GetServiceOrCreateInstance<TCredential>( serviceProvider ) ) );
+    }
+}
+
+internal sealed class BoundApiCredential( IConfiguration configuration, string key ) : ApiCredential
+{
+    private readonly string value = configuration[ key ] ?? throw new ArgumentException( $"Configuration does not contain the key '{key}'.", nameof( key ) );
+
+    public override ValueTask<string> Acquire( CancellationToken cancellation ) => new( value );
 }

@@ -1,12 +1,11 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Microsoft.Extensions.Options;
-using TMetric.Abstractions;
+using TMetric.Json;
 using V3 = TMetric.Abstractions.V3;
 
 namespace TMetric.Tests;
 
-public sealed class TimeEntryOperationsTests
+public sealed class TimeEntryApiTests
 {
     [Fact]
     public async Task Gets_timeentries_v3( )
@@ -16,8 +15,8 @@ public sealed class TimeEntryOperationsTests
             BaseAddress = new Uri( "https://localhost:8080/" ),
         };
 
-        var operations = new TimeEntryV3Operations( http, Options.Create<TMetricOptions>( new() ) );
-        var entries = await operations.Get( 0, new() );
+        var api = new TimeEntryApi( http );
+        var entries = await api.Get( 0, new() );
 
         Assert.NotEmpty( entries );
     }
@@ -26,17 +25,16 @@ public sealed class TimeEntryOperationsTests
     {
         private static HttpResponseMessage TimeEntriesV3( HttpRequestMessage request ) => new( HttpStatusCode.OK )
         {
-            Content = JsonContent.Create( new[] { new V3.TimeEntry(), new V3.TimeEntry() } ),
+            Content = JsonContent.Create( [ new V3.TimeEntry(), new V3.TimeEntry() ], TMetricJsonContext.Default.TimeEntryArray ),
             RequestMessage = request,
         };
 
         protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
         {
-            string path = request.RequestUri!.AbsolutePath;
+            var path = request.RequestUri!.AbsolutePath;
             var response = path switch
             {
                 "/v3/accounts/0/timeentries" => TimeEntriesV3( request ),
-
                 _ => throw new NotSupportedException( $"Route '{path}' not supported by {GetType().Name}. Add it, or get over it. :)" ),
             };
 

@@ -1,55 +1,65 @@
 ﻿name: default
 
 env:
-  TMETRIC_DOTNET_VERSION: 6.0.413
   DOTNET_NOLOGO: true
 
-on:   
+on:
   push:
-    branches: [ develop, main, 'feature/**' ]
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-    
+      - uses: actions/checkout@v4
+
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.TMETRIC_DOTNET_VERSION }}
+          cache: true
+          cache-dependency-path: ./**/packages.lock.json
+          global-json-file: global.json
 
       - name: Restore dependencies
-        run: dotnet restore --force
+        run: dotnet restore --locked-mode
 
       - name: Build solution
         run: dotnet build --configuration Release --no-restore
 
   test:
-    needs: [ build ]
+    needs: [build]
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-    
+      - uses: actions/checkout@v4
+
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.TMETRIC_DOTNET_VERSION }}
+          cache: false
+          cache-dependency-path: ./**/packages.lock.json
+          global-json-file: global.json
 
       - name: Restore dependencies
-        run: dotnet restore --force
+        run: dotnet restore --locked-mode
 
       - name: Run tests
-        run: foreach( $project in Get-ChildItem "TMetric.*Tests.csproj" -Recurse ) { dotnet test "$($project.FullName)" -f net6.0 --results-directory TestResults --logger "trx;logFileName=$($project.BaseName).trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DeterministicReport=true }        
+        run: foreach( $project in Get-ChildItem "TMetric.*Tests.csproj" -Recurse ) { dotnet test "$($project.FullName)" -f net8.0 --results-directory TestResults --logger "trx;logFileName=$($project.BaseName).trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DeterministicReport=true }
         shell: pwsh
 
       - name: Upload artifact 'tmetric-test-results'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
-            name: tmetric-test-results
-            path: TestResults
-      
+          name: tmetric-test-results
+          path: TestResults
+
       - name: Report test results
         uses: dorny/test-reporter@v1
         if: success() || failure()
@@ -59,10 +69,10 @@ jobs:
           reporter: dotnet-trx
 
       - name: Generate coverage results
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.9
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.3.6
         with:
           reports: TestResults/**/coverage.cobertura.xml
-          reporttypes: 'Cobertura;MarkdownSummary'
+          reporttypes: "Cobertura;MarkdownSummary"
           targetdir: CoverageResults
           title: coverage results
 
@@ -76,11 +86,11 @@ jobs:
       - name: Report coverage results
         uses: cryptoc1/cobertura-action@master
         if: success() || failure()
-        with: 
+        with:
           fail_below_threshold: false
           link_missing_lines: true
           minimum_coverage: 80
-          path: CoverageResults/Cobertura.xml 
+          path: CoverageResults/Cobertura.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: coverage results
           show_branch: false
@@ -90,48 +100,55 @@ jobs:
 
       - name: Publish coverage results
         if: success() || failure()
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v4
 
   pack:
-    needs: [ build ]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-    
+
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.TMETRIC_DOTNET_VERSION }}
-        
+          cache: true
+          cache-dependency-path: ./**/packages.lock.json
+          global-json-file: global.json
+
       - name: Restore dependencies
-        run: dotnet restore --force
+        run: dotnet restore --locked-mode
 
       - name: Create packages
         run: dotnet pack --configuration Release --output dist /p:WarningLevel=0
 
       - name: Upload artifact 'tmetric-packages'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-            name: tmetric-packages
-            path: dist
+          name: tmetric-packages
+          path: dist
 
   publish:
     if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
-    needs: [ pack ]
+    needs: [pack]
 
     runs-on: ubuntu-latest
     steps:
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+      - uses: actions/checkout@v4
         with:
-          dotnet-version: ${{ env.TMETRIC_DOTNET_VERSION }}
+          sparse-checkout: global.json
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          cache: false
+          global-json-file: global.json
 
       - name: Download artifact 'tmetric-packages'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: tmetric-packages
-      
+
       - name: Push packages
         run: dotnet nuget push "*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

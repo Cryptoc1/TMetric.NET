@@ -1,14 +1,12 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Microsoft.Extensions.Options;
-using TMetric.Abstractions;
-
+using TMetric.Json;
 using V2 = TMetric.Abstractions.V2;
 using V3 = TMetric.Abstractions.V3;
 
 namespace TMetric.Tests;
 
-public sealed class ClientOperationsTests
+public sealed class ClientApiTests
 {
     [Fact]
     public async Task Gets_clients( )
@@ -18,8 +16,8 @@ public sealed class ClientOperationsTests
             BaseAddress = new Uri( "https://localhost:8080/" ),
         };
 
-        var operations = new ClientV2Operations( http, Options.Create<TMetricOptions>( new() ) );
-        var clients = await operations.Get( 0 );
+        var api = new ClientVersion2Api( http );
+        var clients = await api.Get( 0 );
 
         Assert.NotEmpty( clients );
     }
@@ -32,11 +30,8 @@ public sealed class ClientOperationsTests
             BaseAddress = new Uri( "https://localhost:8080/" ),
         };
 
-        var options = Options.Create<TMetricOptions>( new() );
-        var v3 = new ClientV3Operations( http, options );
-
-        var operations = new ClientV3Operations( http, options );
-        var clients = await operations.Get( 0 );
+        var api = new ClientVersion3Api( http );
+        var clients = await api.Get( 0 );
 
         Assert.NotEmpty( clients );
     }
@@ -49,8 +44,8 @@ public sealed class ClientOperationsTests
             BaseAddress = new Uri( "https://localhost:8080/" ),
         };
 
-        var operations = new ClientV2Operations( http, Options.Create<TMetricOptions>( new() ) );
-        var client = await operations.Get( 0, 0 );
+        var api = new ClientVersion2Api( http );
+        var client = await api.Get( 0, 0 );
 
         Assert.NotNull( client );
     }
@@ -59,25 +54,25 @@ public sealed class ClientOperationsTests
     {
         private static HttpResponseMessage Client( HttpRequestMessage request ) => new( HttpStatusCode.OK )
         {
-            Content = JsonContent.Create( new V2.Client() ),
+            Content = JsonContent.Create( new V2.Client(), TMetricJsonContext.Default.Client ),
             RequestMessage = request,
         };
 
         private static HttpResponseMessage Clients( HttpRequestMessage request ) => new( HttpStatusCode.OK )
         {
-            Content = JsonContent.Create( new[] { new V2.Client(), new V2.Client() } ),
+            Content = JsonContent.Create( [ new V2.Client(), new V2.Client() ], TMetricJsonContext.Default.ClientArray ),
             RequestMessage = request,
         };
 
         private static HttpResponseMessage ClientsV3( HttpRequestMessage request ) => new( HttpStatusCode.OK )
         {
-            Content = JsonContent.Create( new[] { new V3.ClientBasic(), new V3.ClientBasic() } ),
+            Content = JsonContent.Create( [ new V3.ClientBasic(), new V3.ClientBasic() ], TMetricJsonContext.Default.ClientBasicArray ),
             RequestMessage = request,
         };
 
         protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
         {
-            string path = request.RequestUri!.AbsolutePath;
+            var path = request.RequestUri!.AbsolutePath;
             var response = path switch
             {
                 "/accounts/0/clients" => Clients( request ),

@@ -2,7 +2,7 @@
 
 namespace TMetric.Abstractions.V2;
 
-public interface IInvoiceOperations
+public interface IInvoiceApi
 {
     Task<Invoice> Create( int accountId, CreateInvoiceParameters parameters, CancellationToken cancellation = default );
 
@@ -53,7 +53,7 @@ public record class Invoice
     public int ClientId { get; set; }
 
     [StringLength( 3, MinimumLength = 3 )]
-    public string Currency { get; set; }
+    public string Currency { get; set; } = default!;
 
     public decimal DiscountAmount { get; set; }
 
@@ -85,8 +85,8 @@ public record class Invoice
 
     public decimal TotalAmount { get; set; }
 
-    [MaxLength( 30 )]
-    public string TextId { get; set; }
+    [StringLength( 30 )]
+    public string TextId { get; set; } = default!;
 }
 
 public sealed class InvoiceExcel : Stream
@@ -105,7 +105,7 @@ public sealed class InvoiceExcel : Stream
 
     private readonly Stream source;
 
-    public InvoiceExcel( string name, Stream source )
+    internal InvoiceExcel( string name, Stream source )
     {
         Name = name;
         this.source = source;

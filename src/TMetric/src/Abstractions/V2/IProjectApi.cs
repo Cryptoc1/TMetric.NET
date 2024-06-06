@@ -2,7 +2,7 @@
 
 namespace TMetric.Abstractions.V2;
 
-public interface IProjectOperations
+public interface IProjectApi
 {
     Task<ProjectLite[]> Get( int accountId, GetProjectsParameters parameters, CancellationToken cancellation = default );
 
@@ -11,7 +11,7 @@ public interface IProjectOperations
 
 public record class GetProjectsParameters
 {
-    public ICollection<int> Clients { get; set; } = new List<int>();
+    public ICollection<int> Clients { get; set; } = [];
 
     public bool? OnlyTracked { get; set; }
 }
@@ -20,7 +20,7 @@ public record class Project
 {
     public int AccountId { get; set; }
 
-    public Uri Avatar { get; set; }
+    public Uri Avatar { get; set; } = default!;
 
     public int BudgetAlertPercents { get; set; }
 
@@ -30,19 +30,19 @@ public record class Project
 
     public int ClientId { get; set; }
 
-    public Rate CommonBillableRate { get; set; }
+    public Rate CommonBillableRate { get; set; } = default!;
 
     public bool IsBillable { get; set; }
 
     public string? Notes { get; set; }
 
-    public string ProjectCode { get; set; }
+    public string ProjectCode { get; set; } = default!;
 
     public double ProjectFee { get; set; }
 
     public int ProjectId { get; set; }
 
-    public string ProjectName { get; set; }
+    public string ProjectName { get; set; } = default!;
 
     public ProjectStatus ProjectStatus { get; set; }
 }

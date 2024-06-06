@@ -30,7 +30,7 @@ public sealed class DateOnlyConverterTests
             Converters = { new DateOnlyConverter() },
         };
 
-        string json = JsonSerializer.Serialize( date, options );
+        var json = JsonSerializer.Serialize( date, options );
 
         Assert.NotEqual( value, json );
         Assert.Equal( dateTimeValue, json );
@@ -38,13 +38,11 @@ public sealed class DateOnlyConverterTests
 
     private sealed class DateConverterData : IEnumerable<object[]>
     {
-        private static readonly DateOnly[] Dates = new[]
-        {
+        private static readonly DateOnly[] Dates = [
             new DateOnly( 2022, 1, 2 ),
             new DateOnly( 2022, 2, 1 ),
             new DateOnly( 2022, 6, 6 ),
-            new DateOnly( 2022, 6, 29 ),
-        };
+            new DateOnly( 2022, 6, 29 ) ];
 
         public IEnumerator<object[]> GetEnumerator( )
         {

@@ -1,12 +1,11 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Microsoft.Extensions.Options;
-using TMetric.Abstractions;
+using TMetric.Json;
 using V2 = TMetric.Abstractions.V2;
 
 namespace TMetric.Tests;
 
-public sealed class ProjectOperationsTests
+public sealed class ProjectApiTests
 {
     [Fact]
     public async Task Gets_projects( )
@@ -16,8 +15,8 @@ public sealed class ProjectOperationsTests
             BaseAddress = new Uri( "https://localhost:8080/" ),
         };
 
-        var operations = new ProjectV2Operations( http, Options.Create<TMetricOptions>( new() ) );
-        var projects = await operations.Get( 0, new V2.GetProjectsParameters() );
+        var api = new ProjectApi( http );
+        var projects = await api.Get( 0, new V2.GetProjectsParameters() );
 
         Assert.NotEmpty( projects );
     }
@@ -30,8 +29,8 @@ public sealed class ProjectOperationsTests
             BaseAddress = new Uri( "https://localhost:8080/" ),
         };
 
-        var operations = new ProjectV2Operations( http, Options.Create<TMetricOptions>( new() ) );
-        var project = await operations.Get( 0, 0 );
+        var api = new ProjectApi( http );
+        var project = await api.Get( 0, 0 );
 
         Assert.NotNull( project );
     }
@@ -40,19 +39,19 @@ public sealed class ProjectOperationsTests
     {
         private static HttpResponseMessage Project( HttpRequestMessage request ) => new( HttpStatusCode.OK )
         {
-            Content = JsonContent.Create( new V2.Project() ),
+            Content = JsonContent.Create( new V2.Project(), TMetricJsonContext.Default.Project ),
             RequestMessage = request,
         };
 
         private static HttpResponseMessage Projects( HttpRequestMessage request ) => new( HttpStatusCode.OK )
         {
-            Content = JsonContent.Create( new[] { new V2.ProjectLite(), new V2.ProjectLite() } ),
+            Content = JsonContent.Create( [ new V2.ProjectLite(), new V2.ProjectLite() ], TMetricJsonContext.Default.ProjectLiteArray ),
             RequestMessage = request,
         };
 
         protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
         {
-            string path = request.RequestUri!.AbsolutePath;
+            var path = request.RequestUri!.AbsolutePath;
             var response = path switch
             {
                 "/accounts/0/projects" => Projects( request ),

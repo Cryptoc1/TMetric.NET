@@ -9,10 +9,10 @@ public sealed class ServiceExtensionTests
     public void Client_can_be_constructed( )
     {
         var services = new ServiceCollection()
-            .AddTMetric( options => options.ApiKey = "TEST" )
+            .AddTMetric()
             .BuildServiceProvider();
 
-        var exception = Record.Exception( services.GetRequiredService<ITMetricClient> );
+        var exception = Record.Exception( services.GetRequiredService<ITMetricApi> );
 
         Assert.Null( exception );
         Assert.IsNotType<InvalidOperationException>( exception );

@@ -1,16 +1,15 @@
 ﻿using System.Net;
-using Microsoft.Extensions.Options;
 using TMetric.Abstractions;
 
 namespace TMetric.Tests;
 
-public sealed class DefaultAuthorizationHandlerTests
+public sealed class AuthorizationHandlerTests
 {
     [Fact]
     public async Task Handler_adds_bearer_authorization_header( )
     {
-        var options = Options.Create<TMetricOptions>( new() { ApiKey = "Hello, World!" } );
-        using var handler = new DefaultAuthorizationHandler( options )
+
+        using var handler = new AuthorizationHandler( new TestApiCredential( "TEST" ) )
         {
             InnerHandler = new TestResponseHandler(),
         };
@@ -24,17 +23,16 @@ public sealed class DefaultAuthorizationHandlerTests
 
         Assert.NotNull( authorization );
         Assert.Equal( "Bearer", authorization!.Scheme );
-        Assert.Equal( options.Value.ApiKey, authorization!.Parameter );
+        Assert.Equal( "TEST", authorization!.Parameter );
     }
 
     [Theory]
     [InlineData( "" )]
     [InlineData( null )]
     [InlineData( " " )]
-    public async Task Handler_does_not_add_empty_bearer_authorization_header( string apiKey )
+    public async Task Handler_does_not_add_empty_bearer_authorization_header( string? apiKey )
     {
-        var options = Options.Create<TMetricOptions>( new() { ApiKey = apiKey } );
-        using var handler = new DefaultAuthorizationHandler( options )
+        using var handler = new AuthorizationHandler( new TestApiCredential( apiKey ) )
         {
             InnerHandler = new TestResponseHandler(),
         };
@@ -47,17 +45,20 @@ public sealed class DefaultAuthorizationHandlerTests
         Assert.Null( response.RequestMessage!.Headers.Authorization );
     }
 
+    private sealed class TestApiCredential( string? apiKey ) : ApiCredential
+    {
+        public override ValueTask<string> Acquire( CancellationToken cancellation ) => new( apiKey! );
+    }
+
     private sealed class TestResponseHandler : HttpMessageHandler
     {
         protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
-            => Task.FromResult(
-                new HttpResponseMessage
-                {
-                    Content = new StringContent( "Hello, World!" ),
-                    ReasonPhrase = nameof( HttpStatusCode.OK ),
-                    RequestMessage = request,
-                    StatusCode = HttpStatusCode.OK,
-                }
-            );
+            => Task.FromResult( new HttpResponseMessage
+            {
+                Content = new StringContent( "Hello, World!" ),
+                ReasonPhrase = nameof( HttpStatusCode.OK ),
+                RequestMessage = request,
+                StatusCode = HttpStatusCode.OK,
+            } );
     }
 }

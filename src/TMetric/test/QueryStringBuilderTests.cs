@@ -17,7 +17,7 @@ public sealed class QueryStringBuilderTests
     public void Builder_adds_multiple_values( )
     {
         var builder = new QueryStringBuilder()
-            .Add( "key", new[] { "value", "value1" } );
+            .Add( "key", [ "value", "value1" ] );
 
         Assert.Equal( "?key=value&key=value1", builder.ToString() );
     }
@@ -30,10 +30,10 @@ public sealed class QueryStringBuilderTests
         var builder = new QueryStringBuilder()
             .Add( key, value );
 
-        string castValue = ( string )builder;
-        string queryString = builder.ToString();
+        var cast = ( string )builder;
+        var queryString = builder.ToString();
 
-        Assert.Equal( queryString, castValue );
-        Assert.Equal( expectedQueryString, castValue );
+        Assert.Equal( queryString, cast );
+        Assert.Equal( expectedQueryString, cast );
     }
 }

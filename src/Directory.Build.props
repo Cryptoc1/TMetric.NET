@@ -1,55 +1,64 @@
 <Project>
 
-    <PropertyGroup>
-        <!-- Create a property to easily reference the root of the `src` folder -->
-        <SrcDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))</SrcDirectory>
-    </PropertyGroup>
+  <PropertyGroup>
+    <!-- Create a property to easily reference the root of the `src` folder -->
+    <SrcDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))</SrcDirectory>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <Deterministic>true</Deterministic>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <ImplicitUsings>true</ImplicitUsings>
-        <IncludeSymbols>true</IncludeSymbols>
-        <LangVersion>latest</LangVersion>
-        <Nullable>enable</Nullable>
+  <PropertyGroup>
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+    <DefaultItemExcludesInProjectFolder>$(DefaultItemExcludesInProjectFolder);packages.lock.json;</DefaultItemExcludesInProjectFolder>
+    <Deterministic>true</Deterministic>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <Features>strict</Features>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- <GenerateDocumentationFile>true</GenerateDocumentationFile> -->
+    <ImplicitUsings>true</ImplicitUsings>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IsAotCompatible>true</IsAotCompatible>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
-        <!-- Disable legacy analyzers and enable NET/Roslyn analyzers -->
-        <EnableNETAnalyzers>True</EnableNETAnalyzers>
-        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <RunAnalyzers>true</RunAnalyzers>
-        <RunCodeAnalysis>false</RunCodeAnalysis>
+    <!-- Disable legacy analyzers and enable NET/Roslyn analyzers -->
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <RunAnalyzers>true</RunAnalyzers>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
 
-        <TargetFramework>net6.0</TargetFramework>
-    </PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
 
-    <!-- Git Versioning + Metadata -->
-    <PropertyGroup>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <PackageProjectUrl>https://github.com/cryptoc1/TMetric.NET</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/cryptoc1/TMetric.NET.git</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-    </PropertyGroup>
+  <!-- Git Versioning + Metadata -->
+  <PropertyGroup>
+    <MinVerDefaultPreReleaseIdentifiers>beta.0</MinVerDefaultPreReleaseIdentifiers>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
 
-    <!-- NuGet/AssemblyInfo -->
-    <PropertyGroup>
-        <Authors>cryptoc1</Authors>
-        <Copyright>$([System.DateTime]::Now.Year) Escape Developers</Copyright>
-        <PackageId>$(AssemblyName)</PackageId>
-        <Title>$(AssemblyName)</Title>
-    </PropertyGroup>
+  <!-- NuGet/AssemblyInfo -->
+  <PropertyGroup>
+    <Authors>cryptoc1</Authors>
+    <Copyright>$([System.DateTime]::Now.Year) Escape Developers</Copyright>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageProjectUrl>https://github.com/cryptoc1/TMetric.NET</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cryptoc1/TMetric.NET.git</RepositoryUrl>
+    <Title>$(AssemblyName)</Title>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="MinVer" Version="*" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="*" PrivateAssets="all" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MinVer" Version="5.0.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <Using Include="System.Collections" />
-    </ItemGroup>
+  <ItemGroup>
+    <Using Include="System.Collections" />
+  </ItemGroup>
 
-    <PropertyGroup Condition=" '$(GITHUB_ACTIONS)' == 'true' ">
-        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    </PropertyGroup>
+  <PropertyGroup Condition=" '$(GITHUB_ACTIONS)' == 'true' ">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
 
 </Project>

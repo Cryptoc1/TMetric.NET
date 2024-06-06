@@ -2,7 +2,7 @@
 
 namespace TMetric.Abstractions.V2;
 
-public interface IClientOperations
+public interface IClientApi
 {
     Task<Client[]> Get( int accountId, CancellationToken cancellation = default );
 
@@ -28,7 +28,7 @@ public record class Client
 
     public int[]? ContactUsers { get; set; }
 
-    public Rate DefaultBillableRate { get; set; }
+    public Rate DefaultBillableRate { get; set; } = default!;
 
     public uint TotalProjectsCount { get; set; }
 }
@@ -38,5 +38,5 @@ public record class Rate
     public decimal Amount { get; set; }
 
     [StringLength( 3, MinimumLength = 3 )]
-    public string Currency { get; set; }
+    public string Currency { get; set; } = default!;
 }

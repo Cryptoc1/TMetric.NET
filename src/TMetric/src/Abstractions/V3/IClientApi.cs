@@ -2,17 +2,17 @@
 
 namespace TMetric.Abstractions.V3;
 
-public interface IClientOperations
+public interface IClientApi
 {
     public Task<ClientBasic[]> Get( int accountId, CancellationToken cancellation = default );
 }
 
 public record class ClientBasic
 {
-    public Uri IconUrl { get; set; }
+    public Uri IconUrl { get; set; } = default!;
 
     public int Id { get; set; }
 
-    [MaxLength( 255 )]
-    public string Name { get; set; }
+    [StringLength( 255 )]
+    public string Name { get; set; } = default!;
 }
