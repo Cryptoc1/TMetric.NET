@@ -15,15 +15,15 @@ public record class Client
 
     public uint ActiveProjectsCount { get; set; }
 
-    [MaxLength( 100 )]
+    [StringLength( 100 )]
     public string? Avatar { get; set; }
 
-    [MaxLength( 400 )]
+    [StringLength( 400 )]
     public string? ClientAddress { get; set; }
 
     public int ClientId { get; set; }
 
-    [MaxLength( 255 )]
+    [StringLength( 255 )]
     public string? ClientName { get; set; }
 
     public int[]? ContactUsers { get; set; }

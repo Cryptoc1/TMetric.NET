@@ -77,7 +77,7 @@ jobs:
           title: coverage results
 
       - name: Upload artifact 'tmetric-coverage-results'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: tmetric-coverage-results

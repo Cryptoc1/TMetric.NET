@@ -21,7 +21,8 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 
     <!-- Disable legacy analyzers and enable NET/Roslyn analyzers -->
-    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <RunAnalyzers>true</RunAnalyzers>
     <RunCodeAnalysis>false</RunCodeAnalysis>

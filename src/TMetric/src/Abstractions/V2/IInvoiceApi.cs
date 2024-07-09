@@ -29,7 +29,7 @@ public record class CreateInvoiceParameters
     public DateTime EndTime { get; set; }
 
     [Required]
-    public ICollection<int> Projects { get; set; } = new List<int>();
+    public ICollection<int> Projects { get; set; } = [];
 
     [Required]
     public DateTime StartTime { get; set; }
@@ -69,12 +69,12 @@ public record class Invoice
 
     public InvoiceItem[]? Items { get; set; }
 
-    [MaxLength( 30 )]
+    [StringLength( 30 )]
     public string? PurchaseOrderNumber { get; set; }
 
     public InvoiceStatus Status { get; set; }
 
-    [MaxLength( 200 )]
+    [StringLength( 200 )]
     public string? Subject { get; set; }
 
     public decimal SubtotalAmount { get; set; }
