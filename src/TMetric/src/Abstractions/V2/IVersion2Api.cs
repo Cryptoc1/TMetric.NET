@@ -2,11 +2,9 @@
 
 public interface IVersion2Api
 {
-    IClientApi Clients { get; }
+    public IClientApi Clients { get; }
+    public IInvoiceApi Invoices { get; }
+    public IProjectApi Projects { get; }
 
-    IInvoiceApi Invoices { get; }
-
-    IProjectApi Projects { get; }
-
-    Task<string> Version( CancellationToken cancellation = default );
+    public Task<string> Version( CancellationToken cancellation = default );
 }

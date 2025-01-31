@@ -19,7 +19,7 @@ var services = new ServiceCollection()
     .AddTMetric( options => options.ApiKey = "..." )
     .BuildServiceProvider();
 
-var tmetric = services.GetService<ITMetricClient>();
+var tmetric = services.GetService<ITMetricApi>();
 
 int clientId = ...;
 var client = await tmetric.V2.Clients.Get( clientId );

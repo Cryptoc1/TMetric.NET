@@ -1,4 +1,5 @@
-﻿using TMetric.Abstractions.V2;
+﻿using ESCd.Extensions.Http;
+using TMetric.Abstractions.V2;
 using TMetric.Json;
 
 namespace TMetric;
@@ -10,11 +11,11 @@ internal sealed class ProjectApi( HttpClient http ) : IProjectApi
         ArgumentNullException.ThrowIfNull( parameters );
 
         var query = new QueryStringBuilder()
-            .Add( "onlyTracked", parameters.OnlyTracked );
+            .Append( "onlyTracked", parameters.OnlyTracked );
 
         if( parameters.Clients?.Count is not (null or 0) )
         {
-            foreach( var client in parameters.Clients ) query.Add( "ClientList", client );
+            foreach( var client in parameters.Clients ) query.Append( "ClientList", client );
         }
 
         return http.GetFromJsonAsync(

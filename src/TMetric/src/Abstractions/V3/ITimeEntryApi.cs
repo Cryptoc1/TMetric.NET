@@ -5,7 +5,7 @@ namespace TMetric.Abstractions.V3;
 
 public interface ITimeEntryApi
 {
-    Task<TimeEntry[]> Get( int accountId, GetTimeEntriesParameters parameters, CancellationToken cancellation = default );
+    public Task<TimeEntry[]> Get( int accountId, GetTimeEntriesParameters parameters, CancellationToken cancellation = default );
 }
 
 public record class GetTimeEntriesParameters
@@ -27,7 +27,7 @@ public record class TimeEntry
 
     public bool IsInvoiced { get; set; }
 
-    [MaxLength( 400 )]
+    [StringLength( 400 )]
     public string? Note { get; set; }
 
     public ProjectBasic? Project { get; set; }

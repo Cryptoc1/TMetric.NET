@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using ESCd.Extensions.Http;
 using TMetric.Abstractions.V2;
 using TMetric.Json;
 
@@ -50,23 +51,23 @@ internal sealed class InvoiceApi( HttpClient http ) : IInvoiceApi
         {
             foreach( var client in parameters.Clients )
             {
-                query.Add( "ClientList", client );
+                query.Append( "ClientList", client );
             }
         }
 
         if( parameters.EndDate.HasValue )
         {
-            query.Add( "EndDate", parameters.EndDate.Value.ToString( "yyyyMMdd", CultureInfo.InvariantCulture ) );
+            query.Append( "EndDate", parameters.EndDate.Value.ToString( "yyyyMMdd", CultureInfo.InvariantCulture ) );
         }
 
         if( parameters.StartDate.HasValue )
         {
-            query.Add( "StartDate", parameters.StartDate.Value.ToString( "yyyyMMdd", CultureInfo.InvariantCulture ) );
+            query.Append( "StartDate", parameters.StartDate.Value.ToString( "yyyyMMdd", CultureInfo.InvariantCulture ) );
         }
 
         if( parameters.Status.HasValue )
         {
-            query.Add( "Status", ( int )parameters.Status );
+            query.Append( "Status", ( int )parameters.Status );
         }
 
         return http.GetFromJsonAsync(

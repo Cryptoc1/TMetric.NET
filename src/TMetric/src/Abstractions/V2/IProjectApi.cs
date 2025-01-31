@@ -4,9 +4,9 @@ namespace TMetric.Abstractions.V2;
 
 public interface IProjectApi
 {
-    Task<ProjectLite[]> Get( int accountId, GetProjectsParameters parameters, CancellationToken cancellation = default );
+    public Task<ProjectLite[]> Get( int accountId, GetProjectsParameters parameters, CancellationToken cancellation = default );
 
-    Task<Project> Get( int accountId, int projectId, CancellationToken cancellation = default );
+    public Task<Project> Get( int accountId, int projectId, CancellationToken cancellation = default );
 }
 
 public record class GetProjectsParameters
@@ -49,7 +49,7 @@ public record class Project
 
 public record class ProjectLite
 {
-    [MaxLength( 100 )]
+    [StringLength( 100 )]
     public string? Avatar { get; set; }
 
     public int AccountId { get; set; }
@@ -72,14 +72,14 @@ public record class ProjectLite
 
     public string? Notes { get; set; }
 
-    [MaxLength( 16 )]
+    [StringLength( 16 )]
     public string? ProjectCode { get; set; }
 
     public decimal ProjectFee { get; set; }
 
     public int ProjectId { get; set; }
 
-    [MaxLength( 255 )]
+    [StringLength( 255 )]
     public string? ProjectName { get; set; }
 
     public ProjectStatus ProjectStatus { get; set; }

@@ -2,7 +2,6 @@
 
 public interface IVersion3Api
 {
-    IClientApi Clients { get; }
-
-    ITimeEntryApi TimeEntries { get; }
+    public IClientApi Clients { get; }
+    public ITimeEntryApi TimeEntries { get; }
 }

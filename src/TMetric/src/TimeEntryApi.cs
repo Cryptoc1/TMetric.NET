@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using ESCd.Extensions.Http;
 using TMetric.Json;
 using V3 = TMetric.Abstractions.V3;
 
@@ -12,16 +13,16 @@ internal sealed class TimeEntryApi( HttpClient http ) : V3.ITimeEntryApi
         ArgumentNullException.ThrowIfNull( parameters );
 
         var query = new QueryStringBuilder()
-            .Add( "userId", parameters.UserId );
+            .Append( "userId", parameters.UserId );
 
         if( parameters.EndDate.HasValue )
         {
-            query.Add( "endDate", parameters.EndDate.Value.ToString( "yyyy-MM-dd", CultureInfo.InvariantCulture ) );
+            query.Append( "endDate", parameters.EndDate.Value.ToString( "yyyy-MM-dd", CultureInfo.InvariantCulture ) );
         }
 
         if( parameters.StartDate.HasValue )
         {
-            query.Add( "startDate", parameters.StartDate.Value.ToString( "yyyy-MM-dd", CultureInfo.InvariantCulture ) );
+            query.Append( "startDate", parameters.StartDate.Value.ToString( "yyyy-MM-dd", CultureInfo.InvariantCulture ) );
         }
 
         return http.GetFromJsonAsync(

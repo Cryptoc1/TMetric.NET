@@ -4,9 +4,9 @@ namespace TMetric.Abstractions.V2;
 
 public interface IClientApi
 {
-    Task<Client[]> Get( int accountId, CancellationToken cancellation = default );
+    public Task<Client[]> Get( int accountId, CancellationToken cancellation = default );
 
-    Task<Client> Get( int accountId, int clientId, CancellationToken cancellation = default );
+    public Task<Client> Get( int accountId, int clientId, CancellationToken cancellation = default );
 }
 
 public record class Client
