@@ -9,5 +9,5 @@ namespace TMetric.Json;
 [JsonSerializable( typeof( Abstractions.V2.Project ) )]
 [JsonSerializable( typeof( Abstractions.V2.ProjectLite[] ) )]
 [JsonSerializable( typeof( Abstractions.V3.TimeEntry[] ) )]
-[JsonSourceGenerationOptions( Converters = [ typeof( DateOnlyConverter ) ] )]
+[JsonSourceGenerationOptions( Converters = [ typeof( DateOnlyConverter ) ], PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase )]
 public sealed partial class TMetricJsonContext : JsonSerializerContext;
