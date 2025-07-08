@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ESCd.Extensions.Http" Version="1.0.4" />
+    <PackageReference Include="ESCd.Extensions.Http" Version="1.0.10" />
   </ItemGroup>
 
   <ItemGroup>
