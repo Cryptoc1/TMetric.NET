@@ -50,7 +50,7 @@ jobs:
         run: dotnet restore --locked-mode
 
       - name: Run tests
-        run: foreach( $project in Get-ChildItem "TMetric.*Tests.csproj" -Recurse ) { dotnet test "$($project.FullName)" -f net8.0 --results-directory TestResults --logger "trx;logFileName=$($project.BaseName).trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DeterministicReport=true }
+        run: foreach( $project in Get-ChildItem "TMetric.*Tests.csproj" -Recurse ) { dotnet test "$($project.FullName)" -f net9.0 --results-directory TestResults --logger "trx;logFileName=$($project.BaseName).trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DeterministicReport=true }
         shell: pwsh
 
       - name: Upload artifact 'tmetric-test-results'
@@ -102,7 +102,6 @@ jobs:
         if: success() || failure()
         uses: codecov/codecov-action@v5
         with:
-          files: CoverageResults/Cobertura.xml
           token: ${{ secrets.CODECOV_TOKEN }}
 
   pack:
