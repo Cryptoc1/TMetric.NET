@@ -1,4 +1,4 @@
-﻿name: default
+name: default
 
 env:
   DOTNET_NOLOGO: true
@@ -54,7 +54,7 @@ jobs:
         shell: pwsh
 
       - name: Upload artifact 'tmetric-test-results'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: success() || failure()
         with:
           name: tmetric-test-results
@@ -77,7 +77,7 @@ jobs:
           title: coverage results
 
       - name: Upload artifact 'tmetric-coverage-results'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: success() || failure()
         with:
           name: tmetric-coverage-results
@@ -126,7 +126,7 @@ jobs:
         run: dotnet pack --configuration Release --output dist /p:WarningLevel=0
 
       - name: Upload artifact 'tmetric-packages'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: tmetric-packages
           path: dist
