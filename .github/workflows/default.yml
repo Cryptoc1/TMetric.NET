@@ -1,4 +1,4 @@
-﻿name: default
+name: default
 
 env:
   DOTNET_NOLOGO: true
@@ -148,7 +148,7 @@ jobs:
           global-json-file: global.json
 
       - name: Download artifact 'tmetric-packages'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: tmetric-packages
 
